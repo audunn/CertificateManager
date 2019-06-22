@@ -107,6 +107,14 @@ namespace CertificateService
             }
             app.UseIpRateLimiting();
 
+            // Shows UseCors with CorsPolicyBuilder.
+            app.UseCors(builder => {
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+                builder.AllowCredentials();
+                builder.AllowAnyOrigin();
+            });
+            app.UseCors();
             app.UseMvc();
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

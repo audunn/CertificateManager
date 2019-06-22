@@ -14,8 +14,9 @@ namespace CertificateManager.BusinessLogic
     {
         /// <inheritdoc />        
         public string GenerateSelfSignedCertificate(APICertificateRequest request)
-        {            
-            return GetCertificateAsString(CreateCertificate(request));
+        {
+            var cert = CreateCertificate(request);
+            return GetCertificateAsString(cert);
         }
 
         /// <inheritdoc />
@@ -34,8 +35,8 @@ namespace CertificateManager.BusinessLogic
             return builder.ToString();
         }
 
-        private X509Certificate2 CreateCertificate(APICertificateRequest request, bool eidas = true)
-        {
+        private X509Certificate2 CreateCertificate(APICertificateRequest request, bool eidas = false)
+        {            
             using (RSA parent = RSA.Create(4096))
             using (RSA rsa = RSA.Create(2048))
             {
@@ -56,7 +57,7 @@ namespace CertificateManager.BusinessLogic
                     DateTimeOffset.UtcNow.AddDays(365)))
                 {
                     CertificateRequest req = new CertificateRequest(
-                        $"CN={request.CommonName}",
+                        "CN=Valid-Looking Timestamp Authority",
                         rsa,
                         HashAlgorithmName.SHA256,
                         RSASignaturePadding.Pkcs1);
@@ -73,33 +74,24 @@ namespace CertificateManager.BusinessLogic
                         new X509EnhancedKeyUsageExtension(
                             new OidCollection
                             {
-                                new Oid("1.3.6.1.5.5.7.3.8")
+                    new Oid("1.3.6.1.5.5.7.3.8")
                             },
-                            true)
-                        );
+                            true));
 
                     req.CertificateExtensions.Add(
                         new X509SubjectKeyIdentifierExtension(req.PublicKey, false));
-                    
-                    if (eidas)
-                    {
-                        req.CertificateExtensions.Add(
-                            new X509EnhancedKeyUsageExtension(
-                                new OidCollection{
-                                new Oid("1.3.6.1.5.5.7.3.8")
-                                },
-                                true)
-                            );
-                    }
+
                     using (X509Certificate2 cert = req.Create(
                         parentCert,
                         DateTimeOffset.UtcNow.AddDays(-1),
                         DateTimeOffset.UtcNow.AddDays(90),
                         new byte[] { 1, 2, 3, 4 }))
                     {
-                        return cert;
+                        return new X509Certificate2(cert.Export(X509ContentType.Pfx, "WeNeedASaf3rPassword"), "WeNeedASaf3rPassword", X509KeyStorageFlags.MachineKeySet);
+                                                
                     }
                 }
+                
             }
         }
     }
