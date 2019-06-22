@@ -7,33 +7,42 @@
         <member name="T:CertificateManager.BusinessLogic.CertificateManagerBL">
             <inheritdoc/>
         </member>
-        <member name="M:CertificateManager.BusinessLogic.CertificateManagerBL.GenerateSelfSignedCertificatre(CertificateManager.Models.CertifcateRequest)">
+        <member name="M:CertificateManager.BusinessLogic.CertificateManagerBL.GenerateSelfSignedCertificate(CertificateManager.Models.APICertificateRequest)">
+            <inheritdoc />        
+        </member>
+        <member name="M:CertificateManager.BusinessLogic.CertificateManagerBL.GenerateEIDASSelfSignedCertificate(CertificateManager.Models.APICertificateRequest)">
             <inheritdoc />
-            <returns></returns>
         </member>
         <member name="T:CertificateManager.BusinessLogic.ICertificateManager">
             <summary>
             CertificateManager logic
             </summary>
         </member>
-        <member name="M:CertificateManager.BusinessLogic.ICertificateManager.GenerateSelfSignedCertificatre(CertificateManager.Models.CertifcateRequest)">
+        <member name="M:CertificateManager.BusinessLogic.ICertificateManager.GenerateSelfSignedCertificate(CertificateManager.Models.APICertificateRequest)">
             <summary>
             Generates a self signed certificate
             </summary>
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="T:CertificateManager.Models.CertifcateRequest">
+        <member name="M:CertificateManager.BusinessLogic.ICertificateManager.GenerateEIDASSelfSignedCertificate(CertificateManager.Models.APICertificateRequest)">
+            <summary>
+            Generates a self signed EIDAS certificate
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CertificateManager.Models.APICertificateRequest">
             <summary>
             Certificate Request
             </summary>
         </member>
-        <member name="P:CertificateManager.Models.CertifcateRequest.CommonName">
+        <member name="P:CertificateManager.Models.APICertificateRequest.CommonName">
             <summary>
             Common name of the TPP company (e.g. "Brinklyfy.io").
             </summary>
         </member>
-        <member name="P:CertificateManager.Models.CertifcateRequest.Country">
+        <member name="P:CertificateManager.Models.APICertificateRequest.Country">
             <summary>
             Country as ISO 3166-1 Alpha 2 (e.g. FI).
             </summary>
@@ -43,10 +52,29 @@
             Certificate Manger API 
             </summary>
         </member>
-        <member name="M:CertificateService.Controllers.CertificateController.Get(CertificateManager.Models.CertifcateRequest)">
+        <member name="M:CertificateService.Controllers.CertificateController.Get(CertificateManager.Models.APICertificateRequest)">
             <summary>
             Creates and resturns a self signed test certificate
             </summary>
+        </member>
+        <member name="M:CertificateService.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Startup
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:CertificateService.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configure Services 
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:CertificateService.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            Configures HTTP request pipeline
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
         </member>
     </members>
 </doc>
