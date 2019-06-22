@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CertificateManager</name>
+    </assembly>
+    <members>
+        <member name="T:CertificateManager.BusinessLogic.CertificateManagerBL">
+            <inheritdoc/>
+        </member>
+        <member name="M:CertificateManager.BusinessLogic.CertificateManagerBL.GenerateSelfSignedCertificatre(CertificateManager.Models.CertifcateRequest)">
+            <inheritdoc />
+            <returns></returns>
+        </member>
+        <member name="T:CertificateManager.BusinessLogic.ICertificateManager">
+            <summary>
+            CertificateManager logic
+            </summary>
+        </member>
+        <member name="M:CertificateManager.BusinessLogic.ICertificateManager.GenerateSelfSignedCertificatre(CertificateManager.Models.CertifcateRequest)">
+            <summary>
+            Generates a self signed certificate
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CertificateManager.Models.CertifcateRequest">
+            <summary>
+            Certificate Request
+            </summary>
+        </member>
+        <member name="P:CertificateManager.Models.CertifcateRequest.CommonName">
+            <summary>
+            Common name of the TPP company (e.g. "Brinklyfy.io").
+            </summary>
+        </member>
+        <member name="P:CertificateManager.Models.CertifcateRequest.Country">
+            <summary>
+            Country as ISO 3166-1 Alpha 2 (e.g. FI).
+            </summary>
+        </member>
+        <member name="T:CertificateService.Controllers.CertificateController">
+            <summary>
+            Certificate Manger API 
+            </summary>
+        </member>
+        <member name="M:CertificateService.Controllers.CertificateController.Get(CertificateManager.Models.CertifcateRequest)">
+            <summary>
+            Creates and resturns a self signed test certificate
+            </summary>
+        </member>
+    </members>
+</doc>
