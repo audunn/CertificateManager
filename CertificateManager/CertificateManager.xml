@@ -108,6 +108,24 @@
             validity
             </summary>        
         </member>
+        <member name="T:CertificateService.Controllers.SimpleCertificateController">
+            <summary>
+            Certificate Manger API 
+            </summary>
+        </member>
+        <member name="M:CertificateService.Controllers.SimpleCertificateController.#ctor(CertificateManager.BusinessLogic.ICertificateManager,Microsoft.Extensions.Logging.ILogger{CertificateService.Controllers.SimpleCertificateController},Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Load accounts, logger, app settings and url helper
+            </summary>
+            <param name="manager">accounts</param>
+            <param name="logger">logger</param>        
+            <param name="config">logger</param>        
+        </member>
+        <member name="M:CertificateService.Controllers.SimpleCertificateController.Post(CertificateManager.Models.APICertificateRequest)">
+            <summary>
+            Creates and resturns a self signed test certificate
+            </summary>
+        </member>
         <member name="T:CertificateService.Controllers.CertificateController">
             <summary>
             Certificate Manger API 
@@ -122,24 +140,6 @@
             <param name="config">logger</param>        
         </member>
         <member name="M:CertificateService.Controllers.CertificateController.Post(CertificateManager.Models.APICertificateRequest)">
-            <summary>
-            Creates and resturns a self signed test certificate
-            </summary>
-        </member>
-        <member name="T:CertificateService.Controllers.EIDASCertificateController">
-            <summary>
-            Certificate Manger API 
-            </summary>
-        </member>
-        <member name="M:CertificateService.Controllers.EIDASCertificateController.#ctor(CertificateManager.BusinessLogic.ICertificateManager,Microsoft.Extensions.Logging.ILogger{CertificateService.Controllers.EIDASCertificateController},Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            Load accounts, logger, app settings and url helper
-            </summary>
-            <param name="manager">accounts</param>
-            <param name="logger">logger</param>        
-            <param name="config">logger</param>        
-        </member>
-        <member name="M:CertificateService.Controllers.EIDASCertificateController.Post(CertificateManager.Models.APICertificateRequest)">
             <summary>
             Creates and resturns a self signed test certificate
             </summary>

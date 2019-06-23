@@ -14,13 +14,14 @@ namespace CertificateService.Controllers
     /// <summary>
     /// Certificate Manger API 
     /// </summary>
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{api-version:apiVersion}/[controller]")]
     [ApiController]
-    public class EIDASCertificateController : ControllerBase
+    public class CertificateController : ControllerBase
     {
         private readonly ICertificateManager _manager;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<EIDASCertificateController> _logger;
+        private readonly ILogger<CertificateController> _logger;    
 
         /// <summary>
         /// Load accounts, logger, app settings and url helper
@@ -28,7 +29,7 @@ namespace CertificateService.Controllers
         /// <param name="manager">accounts</param>
         /// <param name="logger">logger</param>        
         /// <param name="config">logger</param>        
-        public EIDASCertificateController(ICertificateManager manager, ILogger<EIDASCertificateController> logger, IConfiguration config)
+        public CertificateController(ICertificateManager manager, ILogger<CertificateController> logger, IConfiguration config)
         {
             _manager = manager;
             _logger = logger;

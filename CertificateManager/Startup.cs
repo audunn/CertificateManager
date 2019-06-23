@@ -47,6 +47,8 @@ namespace CertificateService
         public void ConfigureServices(IServiceCollection services)
         {
             Log.Debug("Configure Servies");
+            services.AddApiVersioning();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
