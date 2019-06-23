@@ -15,13 +15,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+using Serilog;
 
 namespace CertificateService
 {
+    /// <summary>
+    /// Startup
+    /// </summary>
     public class Startup
     {
         /// <summary>
-        /// Startup
+        /// Startup constructor
         /// </summary>
         /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
@@ -29,6 +33,9 @@ namespace CertificateService
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -38,6 +45,7 @@ namespace CertificateService
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            Log.Debug("Configure Servies");
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -96,6 +104,7 @@ namespace CertificateService
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            Log.Debug("Configure..");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

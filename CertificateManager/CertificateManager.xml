@@ -57,11 +57,26 @@
             Creates and resturns a self signed test certificate
             </summary>
         </member>
-        <member name="M:CertificateService.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="P:CertificateService.Program.Configuration">
+            <summary>
+            Config
+            </summary>
+        </member>
+        <member name="T:CertificateService.Startup">
             <summary>
             Startup
             </summary>
+        </member>
+        <member name="M:CertificateService.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Startup constructor
+            </summary>
             <param name="configuration"></param>
+        </member>
+        <member name="P:CertificateService.Startup.Configuration">
+            <summary>
+            
+            </summary>
         </member>
         <member name="M:CertificateService.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
