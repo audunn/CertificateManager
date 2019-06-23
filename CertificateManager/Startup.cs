@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using Serilog;
+using CertificateManager.BusinessLogic;
 
 namespace CertificateService
 {
@@ -90,6 +91,10 @@ namespace CertificateService
             // the IHttpContextAccessor service is not registered by default.
             // the clientId/clientIp resolvers use it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
+            // Add CertificateManger DI's
+            services.AddScoped<ICertificateManager, CertificateManagerBL>();
 
             // configuration (resolvers, counter key builders)
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();

@@ -7,6 +7,12 @@
         <member name="T:CertificateManager.BusinessLogic.CertificateManagerBL">
             <inheritdoc/>
         </member>
+        <member name="M:CertificateManager.BusinessLogic.CertificateManagerBL.#ctor(Microsoft.Extensions.Logging.ILogger{CertificateManager.BusinessLogic.CertificateManagerBL})">
+            <summary>
+            Load logger
+            </summary>
+            <param name="logger">mapper</param>        
+        </member>
         <member name="M:CertificateManager.BusinessLogic.CertificateManagerBL.GenerateSelfSignedCertificate(CertificateManager.Models.APICertificateRequest)">
             <inheritdoc />        
         </member>
@@ -37,22 +43,103 @@
             Certificate Request
             </summary>
         </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.Aisp">
+            <summary>
+            aisp
+            </summary>        
+        </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.Aspsp">
+            <summary>
+            aspsp
+            </summary>        
+        </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.City">
+            <summary>
+            City
+            </summary>        
+        </member>
         <member name="P:CertificateManager.Models.APICertificateRequest.CommonName">
             <summary>
-            Common name of the TPP company (e.g. "Brinklyfy.io").
-            </summary>
+            Common name of the TPP company 
+            </summary>        
         </member>
         <member name="P:CertificateManager.Models.APICertificateRequest.Country">
             <summary>
             Country as ISO 3166-1 Alpha 2 (e.g. FI).
             </summary>
         </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.Organization">
+            <summary>
+            organization 
+            </summary>
+        </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.OrganizationUnit">
+            <summary>
+            organizationUnit 
+            </summary>
+        </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.Piisp">
+            <summary>
+            piisp
+            </summary>        
+        </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.Pisp">
+            <summary>
+            pisp
+            </summary>        
+        </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.PspAuthorityId">
+            <summary>
+            pspAuthorityId
+            </summary>        
+        </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.pspAuthorityName">
+            <summary>
+            pspAuthorityName
+            </summary>        
+        </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.State">
+            <summary>
+            state
+            </summary>        
+        </member>
+        <member name="P:CertificateManager.Models.APICertificateRequest.Validity">
+            <summary>
+            validity
+            </summary>        
+        </member>
         <member name="T:CertificateService.Controllers.CertificateController">
             <summary>
             Certificate Manger API 
             </summary>
         </member>
-        <member name="M:CertificateService.Controllers.CertificateController.Get(CertificateManager.Models.APICertificateRequest)">
+        <member name="M:CertificateService.Controllers.CertificateController.#ctor(CertificateManager.BusinessLogic.ICertificateManager,Microsoft.Extensions.Logging.ILogger{CertificateService.Controllers.CertificateController},Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Load accounts, logger, app settings and url helper
+            </summary>
+            <param name="manager">accounts</param>
+            <param name="logger">logger</param>        
+            <param name="config">logger</param>        
+        </member>
+        <member name="M:CertificateService.Controllers.CertificateController.Post(CertificateManager.Models.APICertificateRequest)">
+            <summary>
+            Creates and resturns a self signed test certificate
+            </summary>
+        </member>
+        <member name="T:CertificateService.Controllers.EIDASCertificateController">
+            <summary>
+            Certificate Manger API 
+            </summary>
+        </member>
+        <member name="M:CertificateService.Controllers.EIDASCertificateController.#ctor(CertificateManager.BusinessLogic.ICertificateManager,Microsoft.Extensions.Logging.ILogger{CertificateService.Controllers.EIDASCertificateController},Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Load accounts, logger, app settings and url helper
+            </summary>
+            <param name="manager">accounts</param>
+            <param name="logger">logger</param>        
+            <param name="config">logger</param>        
+        </member>
+        <member name="M:CertificateService.Controllers.EIDASCertificateController.Post(CertificateManager.Models.APICertificateRequest)">
             <summary>
             Creates and resturns a self signed test certificate
             </summary>

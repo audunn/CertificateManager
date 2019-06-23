@@ -16,11 +16,11 @@ namespace CertificateService.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class CertificateController : ControllerBase
+    public class EIDASCertificateController : ControllerBase
     {
         private readonly ICertificateManager _manager;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<CertificateController> _logger;
+        private readonly ILogger<EIDASCertificateController> _logger;
 
         /// <summary>
         /// Load accounts, logger, app settings and url helper
@@ -28,7 +28,7 @@ namespace CertificateService.Controllers
         /// <param name="manager">accounts</param>
         /// <param name="logger">logger</param>        
         /// <param name="config">logger</param>        
-        public CertificateController(ICertificateManager manager, ILogger<CertificateController> logger, IConfiguration config)
+        public EIDASCertificateController(ICertificateManager manager, ILogger<EIDASCertificateController> logger, IConfiguration config)
         {
             _manager = manager;
             _logger = logger;
@@ -42,7 +42,7 @@ namespace CertificateService.Controllers
         public ActionResult<string> Post(APICertificateRequest request)
         {
             _logger.LogDebug($"Calling POST / endpoint ");
-            return _manager.GenerateSelfSignedCertificate(request);
+            return _manager.GenerateEIDASSelfSignedCertificate(request);
         }
 
         //// GET api/values/5
