@@ -149,12 +149,22 @@ namespace CertificateManager.BusinessLogic
             certificateGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, true, new ExtendedKeyUsage((new List<DerObjectIdentifier>() { new DerObjectIdentifier("1.3.6.1.5.5.7.3.1"), new DerObjectIdentifier("1.3.6.1.5.5.7.3.2") })));
 
             var lExtensions = new List<DerObjectIdentifier>();
-
-            lExtensions.Add(new DerObjectIdentifier("0.4.0.19495.1.1"));//, PSD2Roles.ASPSP);
-            lExtensions.Add(new DerObjectIdentifier("0.4.0.19495.1.2"));//, PSD2Roles.PISP);
-            lExtensions.Add(new DerObjectIdentifier("0.4.0.19495.1.3"));//, PSD2Roles.AISP);
-            lExtensions.Add(new DerObjectIdentifier("0.4.0.19495.1.4"));//, PSD2Roles.PIISP);
-
+            if (request.Aspsp)
+            {
+                lExtensions.Add(new DerObjectIdentifier("0.4.0.19495.1.1"));//, PSD2Roles.ASPSP);
+            }
+            if (request.Pisp)
+            {
+                lExtensions.Add(new DerObjectIdentifier("0.4.0.19495.1.2"));//, PSD2Roles.PISP);
+            }
+            if (request.Aisp)
+            {
+                lExtensions.Add(new DerObjectIdentifier("0.4.0.19495.1.3"));//, PSD2Roles.AISP);
+            }
+            if (request.Piisp)
+            {
+                lExtensions.Add(new DerObjectIdentifier("0.4.0.19495.1.4"));//, PSD2Roles.PIISP);
+            }
             certificateGenerator.AddExtension(X509Extensions.QCStatements, true, new ExtendedKeyUsage(lExtensions));
             
 
@@ -163,12 +173,31 @@ namespace CertificateManager.BusinessLogic
             certificateGenerator.SetSerialNumber(serialNumber);
 
             // Issuer and Subject Name
-            X509Name subjectDN = new X509Name("CN="+request.CommonName);
+            // build name attributes
+            var nameOids = new ArrayList();
+            nameOids.Add(X509Name.CN);
+            nameOids.Add(X509Name.O);
+            nameOids.Add(X509Name.OU);
+            nameOids.Add(X509Name.C);
+            nameOids.Add(X509Name.L);
+            nameOids.Add(X509Name.ST);
+
+            var nameValues = new ArrayList();
+            nameValues.Add(request.CommonName);
+            nameValues.Add(request.Organization);
+            nameValues.Add(request.OrganizationUnit);
+            nameValues.Add(request.Country);
+            nameValues.Add(request.City);
+            nameValues.Add(request.State);
+
+
+            //X509Name subjectDN = new X509Name("CN="+request.CommonName);
+            X509Name subjectDN = new X509Name(nameOids, nameValues);
             X509Name issuerDN = new X509Name("CN="+request.CommonName);
-            
+                       
             certificateGenerator.SetIssuerDN(issuerDN);
             certificateGenerator.SetSubjectDN(subjectDN);
-
+            
             // Valid For
             DateTime notBefore = DateTime.UtcNow.Date;
             DateTime notAfter = notBefore.AddYears(2);
