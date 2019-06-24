@@ -40,7 +40,8 @@ namespace CertificateService.Controllers
         /// Creates and resturns a self signed test certificate
         /// </summary>
         [HttpPost]
-        public ActionResult<string> Post(APICertificateRequest request)
+        [ProducesResponseType(typeof(CertificateResponse), 200)]
+        public ActionResult<CertificateResponse> Post(APICertificateRequest request)
         {
             _logger.LogDebug($"Calling POST / endpoint ");
             return _manager.GenerateEIDASSelfSignedCertificate(request);

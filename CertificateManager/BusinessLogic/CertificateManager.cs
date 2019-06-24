@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -17,6 +18,7 @@ using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Prng;
 using Org.BouncyCastle.Math;
+using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
@@ -42,12 +44,12 @@ namespace CertificateManager.BusinessLogic
         public string GenerateSelfSignedCertificate(APICertificateRequest request)
         {
             _logger.LogDebug("Create Certificate for Certificate request");
-            var cert = CreateCertificate(request);            
+            var cert = CreateCertificate(request);
             return GetCertificateAsString(cert);
         }
 
         /// <inheritdoc />
-        public string GenerateEIDASSelfSignedCertificate(APICertificateRequest request)
+        public CertificateResponse GenerateEIDASSelfSignedCertificate(APICertificateRequest request)
         {
             //var certificate = CreateCertificate(request, true);            
             AsymmetricKeyParameter myCAprivateKey = null;
@@ -56,8 +58,14 @@ namespace CertificateManager.BusinessLogic
             _logger.LogDebug("Creating certificate based on CA");
             //X509Certificate2 certificate = CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey("CN=" + certSubjectName, "CN=" + certSubjectName + "CA", myCAprivateKey);
             X509Certificate2 certificate = CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey($"CN={request.CommonName}", $"CN={request.CommonName}CA", myCAprivateKey);
+            TextWriter textWriter = new StringWriter();
+            PemWriter pemWriter = new PemWriter(textWriter);
+            pemWriter.WriteObject(myCAprivateKey);
+            pemWriter.Writer.Flush();
 
-            return GetCertificateAsString(certificate);
+            string privateKey = textWriter.ToString();
+            CertificateResponse response = new CertificateResponse() { EncodedCert = GetCertificateAsString(certificate), PrivateKey = privateKey };
+            return response;
         }
 
         private static string GetCertificateAsString(X509Certificate2 certificate)

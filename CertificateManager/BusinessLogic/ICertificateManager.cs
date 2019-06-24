@@ -23,6 +23,6 @@ namespace CertificateManager.BusinessLogic
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        string GenerateEIDASSelfSignedCertificate(APICertificateRequest request);
+        CertificateResponse GenerateEIDASSelfSignedCertificate(APICertificateRequest request);
     }
 }
