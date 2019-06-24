@@ -57,7 +57,7 @@ namespace CertificateManager.BusinessLogic
             X509Certificate2 certificateAuthorityCertificate = CreateCertificateAuthorityCertificate($"CN={request.CommonName}CA", ref myCAprivateKey);
             _logger.LogDebug("Creating certificate based on CA");
             //X509Certificate2 certificate = CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey("CN=" + certSubjectName, "CN=" + certSubjectName + "CA", myCAprivateKey);
-            X509Certificate2 certificate = CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey($"CN={request.CommonName}", $"CN={request.CommonName}CA", myCAprivateKey);
+            X509Certificate2 certificate = CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey(request, myCAprivateKey);
             TextWriter textWriter = new StringWriter();
             PemWriter pemWriter = new PemWriter(textWriter);
             pemWriter.WriteObject(myCAprivateKey);
@@ -136,7 +136,7 @@ namespace CertificateManager.BusinessLogic
             }
         }
 
-        public static X509Certificate2 CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey(string subjectName, string issuerName, AsymmetricKeyParameter issuerPrivKey)
+        public static X509Certificate2 CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey(APICertificateRequest request, AsymmetricKeyParameter issuerPrivKey)
         {
             const int keyStrength = 4096;
 
@@ -163,8 +163,9 @@ namespace CertificateManager.BusinessLogic
             certificateGenerator.SetSerialNumber(serialNumber);
 
             // Issuer and Subject Name
-            X509Name subjectDN = new X509Name($"CN={subjectName}");
-            X509Name issuerDN = new X509Name(issuerName);
+            X509Name subjectDN = new X509Name("CN="+request.CommonName);
+            X509Name issuerDN = new X509Name("CN="+request.CommonName);
+            
             certificateGenerator.SetIssuerDN(issuerDN);
             certificateGenerator.SetSubjectDN(subjectDN);
 
