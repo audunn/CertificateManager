@@ -54,7 +54,7 @@ namespace CertificateService
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Certificate Manger API",
-                    Description = "A simple Certificate Manger API to generate self signed certificates for testing purposes",
+                    Description = "A simple Certificate Manger API to generate self signed certificates for testing purposes. It was created to generate EIDAS certifictes for internal testing ",
                     Version = "v1",
                     Contact = new Contact()
                     {
