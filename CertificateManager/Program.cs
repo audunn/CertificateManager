@@ -11,9 +11,11 @@ using Serilog;
 
 namespace CertificateService
 {
-    public class Program
+    /// <summary>
+    /// Staring point for the app, class is used to setup the WebHost
+    /// </summary>
+    public static class Program
     {
-        private static string _environmentName;
         /// <summary>
         /// Config
         /// </summary>
@@ -24,8 +26,12 @@ namespace CertificateService
             .AddEnvironmentVariables()
             .Build();
 
+        /// <summary>
+        /// Main method is used to setup the WebHost
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
-        {            
+        {
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
                 .Enrich.WithProperty("App Name", "Serilog Web App Sample")
@@ -47,6 +53,11 @@ namespace CertificateService
         }
 
 
+        /// <summary>
+        /// Create a host using an instance of IWebHostBuilder.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseSerilog()

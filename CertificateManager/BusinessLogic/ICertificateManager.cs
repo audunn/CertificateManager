@@ -12,17 +12,10 @@ namespace CertificateManager.BusinessLogic
     public interface ICertificateManager
     {
         /// <summary>
-        /// Generates a self signed certificate
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        string GenerateSelfSignedCertificate(APICertificateRequest request);
-
-        /// <summary>
         /// Generates a self signed EIDAS certificate
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        CertificateResponse GenerateEIDASSelfSignedCertificate(APICertificateRequest request);
+        CertificateResponse GenerateSelfSignedCertificate(APICertificateRequest request);
     }
 }

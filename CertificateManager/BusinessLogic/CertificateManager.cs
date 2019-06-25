@@ -41,15 +41,7 @@ namespace CertificateManager.BusinessLogic
         }
 
         /// <inheritdoc />        
-        public string GenerateSelfSignedCertificate(APICertificateRequest request)
-        {
-            _logger.LogDebug("Create Certificate for Certificate request");
-            var cert = CreateCertificate(request);
-            return GetCertificateAsString(cert);
-        }
-
-        /// <inheritdoc />
-        public CertificateResponse GenerateEIDASSelfSignedCertificate(APICertificateRequest request)
+        public CertificateResponse GenerateSelfSignedCertificate(APICertificateRequest request)
         {
             //var certificate = CreateCertificate(request, true);            
             AsymmetricKeyParameter myCAprivateKey = null;
@@ -83,7 +75,7 @@ namespace CertificateManager.BusinessLogic
             using (RSA rsa = RSA.Create(2048))
             {
                 CertificateRequest parentReq = new CertificateRequest(
-                    "CN=Experimental Issuing Authority",
+                    $"CN={request.CommonName},O={request.Organization}, OU={request.OrganizationUnit},C={request.Country}, L={request.City}, ST={request.State}",
                     parent,
                     HashAlgorithmName.SHA256,
                     RSASignaturePadding.Pkcs1);
@@ -99,7 +91,7 @@ namespace CertificateManager.BusinessLogic
                     DateTimeOffset.UtcNow.AddDays(365)))
                 {
                     CertificateRequest req = new CertificateRequest(
-                        "CN=Valid-Looking Timestamp Authority",
+                        $"CN={request.CommonName},O={request.Organization}, OU={request.OrganizationUnit},C={request.Country}, L={request.City}, ST={request.State}",
                         rsa,
                         HashAlgorithmName.SHA256,
                         RSASignaturePadding.Pkcs1);
@@ -136,6 +128,12 @@ namespace CertificateManager.BusinessLogic
             }
         }
 
+        /// <summary>
+        /// Creates a self signed Certificate using Boncy castle crypto
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="issuerPrivKey"></param>
+        /// <returns></returns>
         public static X509Certificate2 CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey(APICertificateRequest request, AsymmetricKeyParameter issuerPrivKey)
         {
             const int keyStrength = 4096;
@@ -226,6 +224,12 @@ namespace CertificateManager.BusinessLogic
             return certificate2;
         }
 
+        /// <summary>
+        /// Creates the CA certficiate for self siging certificates using Bouncy Castle crypto
+        /// </summary>
+        /// <param name="subjectName"></param>
+        /// <param name="CaPrivateKey"></param>
+        /// <returns></returns>
         public static X509Certificate2 CreateCertificateAuthorityCertificate(string subjectName, ref AsymmetricKeyParameter CaPrivateKey)
         {
             const int keyStrength = 2048;

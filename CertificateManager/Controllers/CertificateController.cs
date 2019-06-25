@@ -17,11 +17,11 @@ namespace CertificateService.Controllers
     [ApiVersion("1")]
     [Route("api/v{api-version:apiVersion}/[controller]")]
     [ApiController]
-    public class SimpleCertificateController : ControllerBase
+    public class CertificateController : ControllerBase
     {
         private readonly ICertificateManager _manager;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<SimpleCertificateController> _logger;
+        private readonly ILogger<CertificateController> _logger;    
 
         /// <summary>
         /// Load accounts, logger, app settings and url helper
@@ -29,7 +29,7 @@ namespace CertificateService.Controllers
         /// <param name="manager">accounts</param>
         /// <param name="logger">logger</param>        
         /// <param name="config">logger</param>        
-        public SimpleCertificateController(ICertificateManager manager, ILogger<SimpleCertificateController> logger, IConfiguration config)
+        public CertificateController(ICertificateManager manager, ILogger<CertificateController> logger, IConfiguration config)
         {
             _manager = manager;
             _logger = logger;
@@ -37,11 +37,26 @@ namespace CertificateService.Controllers
         }
         //// POST api/values
         /// <summary>
-        /// Creates and resturns a self signed test certificate
-        /// </summary>
+        /// Creates and returns a self signed test certificate.        
+        /// </summary>        
+        /// <param name="request">Create certificate request</param>        
+        /// <returns>The generated self signed certficate.</returns>
+        /// <remarks>If you don't need a EIDAS certifcate set EIDAS specific flags to false.</remarks>
+        /// <response code="200">The generated self signed <paramref name="request"/>.</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="500">Internal Server Error</response>        
         [HttpPost]
-        public ActionResult<string> Post(APICertificateRequest request)
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(CertificateResponse), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        [ProducesResponseType(typeof(void), 500)]
+        public ActionResult<CertificateResponse> Post(APICertificateRequest request)
         {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
             _logger.LogDebug($"Calling POST / endpoint ");
             return _manager.GenerateSelfSignedCertificate(request);
         }

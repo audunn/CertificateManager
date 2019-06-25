@@ -7,33 +7,22 @@ using System.Threading.Tasks;
 namespace CertificateManager.Models
 {
     /// <summary>
-    /// Certificate Request
+    /// Certificate Request, Generates a self-signed certifiacte.
     /// </summary>
+    /// <remarks>If you don't need a EIDAS certifcate set EIDAS specific flags to false.</remarks>
     public class APICertificateRequest
     {
         /// <summary>
-        /// aisp
+        /// Common name of the TPP company 
         /// </summary>        
-        [DataMember(Name = "aisp")]
-        public bool Aisp { get; set; }
+        [DataMember(Name = "commonName")]
 
-        /// <summary>
-        /// aspsp
-        /// </summary>        
-        [DataMember(Name = "aspsp")]
-        public bool Aspsp { get; set; }
-
+        public string CommonName { get; set; }
         /// <summary>
         /// City
         /// </summary>        
         [DataMember(Name = "city")]
         public string City { get; set; }
-
-        /// <summary>
-        /// Common name of the TPP company 
-        /// </summary>        
-        [DataMember(Name = "commonName")]
-        public string CommonName { get; set; }
 
         /// <summary>
         /// Country as ISO 3166-1 Alpha 2 (e.g. FI).
@@ -53,38 +42,70 @@ namespace CertificateManager.Models
         [DataMember(Name = "organizationUnit")]
         public string OrganizationUnit { get; set; }
 
+
         /// <summary>
-        /// piisp
+        /// aisp
         /// </summary>        
+        [DataMember(Name = "aisp")]
+        public bool Aisp { get; set; }
+
+        /// <summary>
+        /// aspsp - EIDAS specific 
+        /// </summary>   
+        /// <remarks>
+        /// EIDAS specific 
+        /// </remarks>
+        [DataMember(Name = "aspsp")]
+        public bool Aspsp { get; set; }
+
+
+        /// <summary>
+        /// piisp - EIDAS specific 
+        /// </summary>        
+        /// <remarks>
+        /// EIDAS specific 
+        /// </remarks>
         [DataMember(Name = "piisp")]
         public bool Piisp { get; set; }
 
         /// <summary>
-        /// pisp
+        /// pisp - EIDAS specific 
         /// </summary>        
+        /// <remarks>
+        /// EIDAS specific 
+        /// </remarks>
         [DataMember(Name = "pisp")]
         public bool Pisp { get; set; }
 
         /// <summary>
-        /// pspAuthorityId
+        /// pspAuthorityId  - EIDAS specific 
         /// </summary>        
+        /// <remarks>
+        /// EIDAS specific 
+        /// </remarks>
         [DataMember(Name = "pspAuthorityId")]
         public string PspAuthorityId { get; set; }
 
         /// <summary>
-        /// pspAuthorityName
+        /// pspAuthorityName  - EIDAS specific 
         /// </summary>        
+        /// <remarks>
+        /// EIDAS specific 
+        /// </remarks>
         [DataMember(Name = "pspAuthorityName")]
         public string pspAuthorityName { get; set; }
 
         /// <summary>
-        /// state
+        /// state - EIDAS specific 
         /// </summary>        
+        /// <remarks>
+        /// EIDAS specific 
+        /// </remarks>
         [DataMember(Name = "state")]
         public string State { get; set; }
 
         /// <summary>
-        /// validity
+        /// validity 
         /// </summary>        
         [DataMember(Name = "validity")]
         public string Validity { get; set; }
