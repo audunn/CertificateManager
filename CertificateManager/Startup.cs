@@ -17,6 +17,8 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using Serilog;
 using CertificateManager.BusinessLogic;
+using CertificateManager.Formatters;
+using CertificateManager.Middleware;
 
 namespace CertificateService
 {
@@ -101,7 +103,12 @@ namespace CertificateService
 
             // configuration (resolvers, counter key builders)
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddRouting(options => options.LowercaseUrls = true);
+            services.AddMvc(options =>
+            {
+                options.InputFormatters.Add(new TextPlainInputFormatter());
+            }
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,9 +120,10 @@ namespace CertificateService
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             Log.Debug("Configure..");
+            app.ConfigureCustomExceptionMiddleware();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
             else
             {

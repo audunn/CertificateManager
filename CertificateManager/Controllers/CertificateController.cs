@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CertificateManager.BusinessLogic;
+using CertificateManager.Helpers;
 using CertificateManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -60,6 +61,35 @@ namespace CertificateService.Controllers
             _logger.LogDebug($"Calling POST / endpoint ");
             return _manager.GenerateSelfSignedCertificate(request);
         }
+
+        //// POST api/generateDigest
+        /// <summary>
+        /// Creates and returns a sha256 digest, use plain/test (to be compatible with API that this replaces)
+        /// </summary>        
+        /// <param name="request">Create digest request</param>        
+        /// <returns>The generated digest</returns>        
+        /// <response code="200">The generated digest.</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="500">Internal Server Error</response>        
+        [HttpPost("generateDigest", Name = "GenerateDigest")]
+        [Produces("application/json")]
+        [Consumes("text/plain")]
+        [ProducesResponseType(typeof(CertificateResponse), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        [ProducesResponseType(typeof(void), 500)]        
+        // [SwaggerOperation(OperationId = nameof(GenerateDigest))]
+        public ActionResult<string> GenerateDigest([FromBody] string request)
+        {
+            _logger.LogDebug($"Calling POST /generateDigest endpoint ");
+            if (request == null)
+            {
+                return BadRequest();
+            }
+            
+            _logger.LogDebug($"Calling POST /generateDigest endpoint ");
+            return $"SHA-256={Sha256Helper.GenerateHash(request)}";
+        }
+
 
         //// GET api/values/5
         //[HttpGet("{id}")]
