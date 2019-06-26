@@ -74,9 +74,9 @@ namespace CertificateService.Controllers
         [HttpPost("generateDigest", Name = "GenerateDigest")]
         [Produces("application/json")]
         [Consumes("text/plain")]
-        [ProducesResponseType(typeof(CertificateResponse), 200)]
-        [ProducesResponseType(typeof(void), 400)]
-        [ProducesResponseType(typeof(void), 500)]        
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(ErrorDetails), 400)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]        
         // [SwaggerOperation(OperationId = nameof(GenerateDigest))]
         public ActionResult<string> GenerateDigest([FromBody] string request)
         {
