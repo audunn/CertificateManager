@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CertificateManager.BusinessLogic;
 using CertificateManager.Helpers;
 using CertificateManager.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -48,9 +49,9 @@ namespace CertificateService.Controllers
         /// <response code="500">Internal Server Error</response>        
         [HttpPost]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(CertificateResponse), 200)]
-        [ProducesResponseType(typeof(void), 400)]
-        [ProducesResponseType(typeof(void), 500)]
+        [ProducesResponseType(typeof(CertificateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<CertificateResponse> Post(APICertificateRequest request)
         {
             if (request == null)
@@ -74,9 +75,9 @@ namespace CertificateService.Controllers
         [HttpPost("generateDigest", Name = "GenerateDigest")]
         [Produces("application/json")]
         [Consumes("text/plain")]
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(ErrorDetails), 400)]
-        [ProducesResponseType(typeof(ErrorDetails), 500)]        
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         // [SwaggerOperation(OperationId = nameof(GenerateDigest))]
         public ActionResult<string> GenerateDigest([FromBody] string request)
         {
