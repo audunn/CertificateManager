@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
-using CertificateManager.SwaggerSchemaFilters;
+﻿using CertificateManager.SwaggerSchemaFilters;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Runtime.Serialization;
 
 namespace CertificateManager.Models
 {
     /// <summary>
     /// SigningRequest
     /// </summary>    
+    [SwaggerSchemaFilter(typeof(SigningRequestSchemaFilter))]
     public class SigningRequest
     {
         /// <summary>

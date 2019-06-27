@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using CertificateManager.BusinessLogic;
 using CertificateManager.Helpers;
 using CertificateManager.Models;
-using CertificateManager.SwaggerSchemaFilters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace CertificateService.Controllers
 {
@@ -69,17 +64,7 @@ namespace CertificateService.Controllers
         //// POST api/generateDigest
         /// <summary>
         /// Creates and returns a sha256 digest, use text/plain (to be compatible with API that this replaces)
-        /// </summary>        
-        /// Sample request:
-        ///
-        ///     POST /generateDigest
-        ///     {
-        ///        "id": 1,
-        ///        "name": "Item1",
-        ///        "isComplete": true
-        ///     }
-        ///
-        /// </remarks>
+        /// </summary>
         /// <param name="request">Create digest request</param>        
         /// <returns>The generated digest</returns>        
         /// <response code="200">The generated digest.</response>

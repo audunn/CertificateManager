@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using CertificateManager.SwaggerSchemaFilters;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
 namespace CertificateManager.Models
 {
@@ -10,13 +8,13 @@ namespace CertificateManager.Models
     /// Certificate Request, Generates a self-signed certifiacte.
     /// </summary>
     /// <remarks>If you don't need a EIDAS certifcate set EIDAS specific flags to false.</remarks>
+    [SwaggerSchemaFilter(typeof(CertificateRequestSchemaFilter))]
     public class APICertificateRequest
     {
         /// <summary>
         /// Common name of the TPP company 
         /// </summary>        
         [DataMember(Name = "commonName")]
-
         public string CommonName { get; set; }
         /// <summary>
         /// City

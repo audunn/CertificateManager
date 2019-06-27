@@ -75,8 +75,6 @@ namespace CertificateService
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
-                //c.SchemaFilter<SigningRequestSchemaFilter>();
-                //c.SchemaFilter<CertificateRequestSchemaFilter>(); 
             });
 
             // needed to load configuration from appsettings.json
