@@ -93,8 +93,18 @@ namespace CertificateManager.Models
         /// EIDAS specific 
         /// </remarks>
         [DataMember(Name = "pspAuthorityName")]
-        public string pspAuthorityName { get; set; }
+        public string PspAuthorityName { get; set; }
 
+        /// <summary>
+        /// pspAuthorzationNumber  - EIDAS specific 
+        /// </summary>        
+        /// <remarks>
+        /// EIDAS specific 
+        /// </remarks>
+        [DataMember(Name = "pspAuthorzationNumber")]
+        public string PspAuthorzationNumber { get; set; }
+
+        
         /// <summary>
         /// state - EIDAS specific 
         /// </summary>        
@@ -108,6 +118,6 @@ namespace CertificateManager.Models
         /// validity 
         /// </summary>        
         [DataMember(Name = "validity")]
-        public string Validity { get; set; }
+        public int Validity { get; set; }
     }
 }

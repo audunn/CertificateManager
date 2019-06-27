@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using CertificateManager.BusinessLogic;
 using CertificateManager.Helpers;
 using CertificateManager.Models;
+using CertificateManager.SwaggerSchemaFilters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CertificateService.Controllers
 {
@@ -68,6 +70,16 @@ namespace CertificateService.Controllers
         /// <summary>
         /// Creates and returns a sha256 digest, use text/plain (to be compatible with API that this replaces)
         /// </summary>        
+        /// Sample request:
+        ///
+        ///     POST /generateDigest
+        ///     {
+        ///        "id": 1,
+        ///        "name": "Item1",
+        ///        "isComplete": true
+        ///     }
+        ///
+        /// </remarks>
         /// <param name="request">Create digest request</param>        
         /// <returns>The generated digest</returns>        
         /// <response code="200">The generated digest.</response>
@@ -107,7 +119,7 @@ namespace CertificateService.Controllers
         [ProducesResponseType(typeof(SigningResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [SwaggerOperation(OperationId = nameof(GenerateDigest))]
+        // [SwaggerOperation(OperationId = nameof(GenerateDigest))]        
         public ActionResult<SigningResponse> SignData([FromBody] SigningRequest request)
         {
             _logger.LogDebug($"Calling POST /generateDigest endpoint ");
@@ -117,7 +129,7 @@ namespace CertificateService.Controllers
             }
 
             _logger.LogDebug($"Calling POST /generateDigest endpoint ");
-            var bytes = Encoding.UTF8.GetBytes(request.Digest);
+            var bytes = Encoding.UTF8.GetBytes(request.Digest.Replace("SHA-256=",""));
             var signature = Convert.ToBase64String(Sha256Helper.SignData(request.PrivateKey, bytes));
             return new SigningResponse() { Algorithm = request.Algorithm, Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId= request.KeyID, Signature = signature  };
         }

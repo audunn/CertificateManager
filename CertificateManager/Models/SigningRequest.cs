@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using CertificateManager.SwaggerSchemaFilters;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CertificateManager.Models
 {
     /// <summary>
     /// SigningRequest
-    /// </summary>
+    /// </summary>    
     public class SigningRequest
     {
         /// <summary>

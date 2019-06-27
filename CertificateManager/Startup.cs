@@ -19,6 +19,7 @@ using Serilog;
 using CertificateManager.BusinessLogic;
 using CertificateManager.Formatters;
 using CertificateManager.Middleware;
+using CertificateManager.SwaggerSchemaFilters;
 
 namespace CertificateService
 {
@@ -56,7 +57,7 @@ namespace CertificateService
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Certificate Manger API",
-                    Description = "A simple Certificate Manger API to generate self signed certificates for testing purposes. It was created to generate EIDAS certifictes for internal testing ",
+                    Description = "A simple Experimental Certificate Manger API to generate self signed certificates for testing purposes. It was created to generate EIDAS certifictes for internal testing ",
                     Version = "v1",
                     Contact = new Contact()
                     {
@@ -68,12 +69,14 @@ namespace CertificateService
                     {
                         Name = "Use under MIT",
                         Url = "https://opensource.org/licenses/MIT"
-                    },                    
-                });
+                    }
+            });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                c.SchemaFilter<SigningRequestSchemaFilter>();
+                c.SchemaFilter<CertificateRequestSchemaFilter>(); 
             });
 
             // needed to load configuration from appsettings.json
