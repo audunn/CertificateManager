@@ -75,6 +75,11 @@ namespace CertificateService
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                //For some reason the SchemaFilter annotation on the schema type does not work so we add this here 
+                //this will make it run for all actions, but we check the type in the filter so they are applied only
+                //to the right actions
+                c.SchemaFilter<SigningRequestSchemaFilter>();
+                c.SchemaFilter<CertificateRequestSchemaFilter>();
             });
 
             // needed to load configuration from appsettings.json

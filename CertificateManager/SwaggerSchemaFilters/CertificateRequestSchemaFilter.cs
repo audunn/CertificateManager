@@ -21,23 +21,29 @@ namespace CertificateManager.SwaggerSchemaFilters
         /// <param name="context"></param>
         public void Apply(Schema schema, SchemaFilterContext context)
         {
-            schema.Example = new APICertificateRequest
+            //For some reason the SchemaFilter annotation on the schema type does not work so we add in startup
+            //this would make it run for all actions, but we check the type here so they are applied only
+            //to the right actions
+            if (context.SystemType == typeof(APICertificateRequest))
             {
-                Aisp = true,
-                Aspsp = true,
-                City = "Nuremberg",
-                CommonName = "MatrixAPI.PSD2_Client",
-                Country = "Germany",
-                Organization = "org",
-                OrganizationUnit = "ou",
-                Piisp = true,
-                Pisp = true,
-                PspAuthorityId = "Germany",
-                PspAuthorityName = "Auth",
-                PspAuthorzationNumber = "12345987",
-                State = "Bayern",
-                Validity = 365
-            };
+                schema.Example = new APICertificateRequest
+                {
+                    Aisp = true,
+                    Aspsp = true,
+                    City = "Nuremberg",
+                    CommonName = "MatrixAPI.PSD2_Client",
+                    Country = "Germany",
+                    Organization = "org",
+                    OrganizationUnit = "ou",
+                    Piisp = true,
+                    Pisp = true,
+                    PspAuthorityId = "Germany",
+                    PspAuthorityName = "Auth",
+                    PspAuthorzationNumber = "12345987",
+                    State = "Bayern",
+                    Validity = 365
+                };
+            }
         }
     }
 }
