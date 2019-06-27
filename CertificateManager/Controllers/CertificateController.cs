@@ -66,7 +66,7 @@ namespace CertificateService.Controllers
 
         //// POST api/generateDigest
         /// <summary>
-        /// Creates and returns a sha256 digest, use plain/test (to be compatible with API that this replaces)
+        /// Creates and returns a sha256 digest, use text/plain (to be compatible with API that this replaces)
         /// </summary>        
         /// <param name="request">Create digest request</param>        
         /// <returns>The generated digest</returns>        
