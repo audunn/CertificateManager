@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CertificateManager.BusinessLogic;
 using CertificateManager.Helpers;
@@ -23,7 +24,7 @@ namespace CertificateService.Controllers
     {
         private readonly ICertificateManager _manager;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<CertificateController> _logger;    
+        private readonly ILogger<CertificateController> _logger;
 
         /// <summary>
         /// Load accounts, logger, app settings and url helper
@@ -74,7 +75,7 @@ namespace CertificateService.Controllers
         /// <response code="500">Internal Server Error</response>        
         [HttpPost("generateDigest", Name = "GenerateDigest")]
         [Produces("application/json")]
-        [Consumes("text/plain")]
+        [Consumes("text/plain", new[] { "application/json"})]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -91,6 +92,35 @@ namespace CertificateService.Controllers
             return $"SHA-256={Sha256Helper.GenerateHash(request)}";
         }
 
+
+        //// POST api/generateDigest
+        /// <summary>
+        /// Generates Signature using SHA256 (Experimental)
+        /// </summary>        
+        /// <param name="request">Signature request</param>        
+        /// <returns>The generated digest</returns>        
+        /// <response code="200">The generated digest.</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="500">Internal Server Error</response>        
+        [HttpPost("generateSignature", Name = "SignData")]
+        [Produces("application/json")]        
+        [ProducesResponseType(typeof(SigningResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        // [SwaggerOperation(OperationId = nameof(GenerateDigest))]
+        public ActionResult<SigningResponse> SignData([FromBody] SigningRequest request)
+        {
+            _logger.LogDebug($"Calling POST /generateDigest endpoint ");
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
+            _logger.LogDebug($"Calling POST /generateDigest endpoint ");
+            var bytes = Encoding.UTF8.GetBytes(request.Digest);
+            var signature = Convert.ToBase64String(Sha256Helper.SignData(request.PrivateKey, bytes));
+            return new SigningResponse() { Algorithm = request.Algorithm, Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId= request.KeyID, Signature = signature  };
+        }
 
         //// GET api/values/5
         //[HttpGet("{id}")]

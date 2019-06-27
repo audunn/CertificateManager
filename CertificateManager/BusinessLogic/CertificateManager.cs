@@ -63,9 +63,9 @@ namespace CertificateManager.BusinessLogic
         private static string GetCertificateAsString(X509Certificate2 certificate)
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine("-----BEGIN CERTIFICATE-----");
-            builder.AppendLine(Convert.ToBase64String(certificate.RawData));
-            builder.AppendLine("-----END CERTIFICATE-----");
+            builder.Append("-----BEGIN CERTIFICATE-----");
+            builder.Append(Convert.ToBase64String(certificate.RawData));
+            builder.Append("-----END CERTIFICATE-----");
             return builder.ToString();
         }
 
