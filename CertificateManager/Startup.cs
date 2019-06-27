@@ -79,7 +79,8 @@ namespace CertificateService
                 //this will make it run for all actions, but we check the type in the filter so they are applied only
                 //to the right actions
                 c.SchemaFilter<SigningRequestSchemaFilter>();
-                c.SchemaFilter<CertificateRequestSchemaFilter>();
+                //we just need the one add both types there
+                //c.SchemaFilter<CertificateRequestSchemaFilter>();
             });
 
             // needed to load configuration from appsettings.json
