@@ -92,8 +92,11 @@ namespace CertificateService.Controllers
 
         //// POST api/generateDigest
         /// <summary>
-        /// Generates Signature using SHA256 (Experimental)
+        /// Generates Signature using given algoritm (Experimental)
         /// </summary>        
+        /// <remarks>
+        ///  Supports SHA256WITHRSA and SHA512WITHRSA
+        /// </remarks>
         /// <param name="request">Signature request</param>        
         /// <returns>The generated digest</returns>        
         /// <response code="200">The generated digest.</response>
@@ -114,34 +117,22 @@ namespace CertificateService.Controllers
             }
 
             _logger.LogDebug($"Calling POST /generateDigest endpoint ");
-            var bytes = Encoding.UTF8.GetBytes(request.Digest.Replace("SHA-256=",""));
-            var signature = Convert.ToBase64String(Sha256Helper.SignData(request.PrivateKey, bytes));
-            return new SigningResponse() { Algorithm = request.Algorithm, Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId= request.KeyID, Signature = signature  };
+            if (request.Algorithm == SigningAlgoritm.SHA256WITHRSA)
+            {
+                var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-256=", ""));
+                var signature = Convert.ToBase64String(Sha256Helper.SignData(request.PrivateKey, bytes));
+                return new SigningResponse() { Algorithm = request.Algorithm, Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId = request.KeyID, Signature = signature };
+            }
+            else if (request.Algorithm == SigningAlgoritm.SHA512WITHRSA)
+            {
+                var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-512=", ""));
+                var signature = Convert.ToBase64String(Sha512Helper.SignData(request.PrivateKey, bytes));
+                return new SigningResponse() { Algorithm = request.Algorithm, Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId = request.KeyID, Signature = signature };
+            }
+            else
+            {
+                return BadRequest($"Unsupported signing algoritm {request.Algorithm}");
+            }
         }
-
-        //// GET api/values/5
-        //[HttpGet("{id}")]
-        //public ActionResult<string> Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/values
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

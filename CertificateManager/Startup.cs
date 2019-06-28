@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.Swagger;
-using Serilog;
+﻿using AspNetCoreRateLimit;
 using CertificateManager.BusinessLogic;
 using CertificateManager.Formatters;
 using CertificateManager.Middleware;
 using CertificateManager.SwaggerSchemaFilters;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace CertificateService
 {
@@ -75,6 +69,8 @@ namespace CertificateService
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                c.DescribeAllEnumsAsStrings();
+                c.DescribeStringEnumsInCamelCase();
                 //For some reason the SchemaFilter annotation on the schema type does not work so we add this here 
                 //this will make it run for all actions, but we check the type in the filter so they are applied only
                 //to the right actions

@@ -113,8 +113,11 @@ namespace CertificateManager.Models
         public string State { get; set; }
 
         /// <summary>
-        /// validity 
+        /// validity in days
         /// </summary>        
+        /// <remarks>
+        /// How many days the certificate should be valid
+        /// </remarks>
         [DataMember(Name = "validity")]
         public int Validity { get; set; }
     }

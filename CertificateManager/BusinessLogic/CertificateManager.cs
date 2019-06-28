@@ -191,7 +191,7 @@ namespace CertificateManager.BusinessLogic
             
             // Valid For
             DateTime notBefore = DateTime.UtcNow.Date;
-            DateTime notAfter = notBefore.AddYears(2);
+            DateTime notAfter = notBefore.AddDays(request.Validity);
 
             certificateGenerator.SetNotBefore(notBefore);
             certificateGenerator.SetNotAfter(notAfter);

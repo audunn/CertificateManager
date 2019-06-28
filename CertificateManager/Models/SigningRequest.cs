@@ -1,5 +1,8 @@
 ﻿using CertificateManager.SwaggerSchemaFilters;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace CertificateManager.Models
@@ -11,17 +14,22 @@ namespace CertificateManager.Models
     public class SigningRequest
     {
         /// <summary>
-        /// Algorithm 
+        /// Algorithm, SHA256 and SHA512 are supported 
         /// </summary>
         [DataMember(Name = "algorithm")]
-
-        public string Algorithm { get; set; }
+        public SigningAlgoritm Algorithm { get; set; }
 
         /// <summary>
         /// Algorithm 
         /// </summary>
         [DataMember(Name = "digest")]
         public string Digest { get; set; }
+
+        /// <summary>
+        /// Signing data
+        /// </summary>
+        [DataMember(Name = "dataToSign")]
+        public string DataToSign { get; set; }
 
         /// <summary>
         /// keyID 

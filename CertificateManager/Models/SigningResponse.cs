@@ -17,7 +17,7 @@ namespace CertificateManager.Models
         /// Algorithm 
         /// </summary>
         [DataMember(Name = "algorithm")]
-        public string Algorithm { get; set; }
+        public SigningAlgoritm Algorithm { get; set; }
 
         /// <summary>
         /// headers 

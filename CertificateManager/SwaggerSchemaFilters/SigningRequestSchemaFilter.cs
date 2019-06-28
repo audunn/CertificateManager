@@ -44,7 +44,7 @@ namespace CertificateManager.SwaggerSchemaFilters
             {
                 schema.Example = new SigningRequest
                 {
-                    Algorithm = "SHA256WITHRSA",
+                    Algorithm = SigningAlgoritm.SHA256WITHRSA,
                     Digest = "SHA-256=xStG1qWQGpXRza7nysZeXJB3UOndEZN2BC4T9b781sE=",
                     KeyID = "1735065854",
                     PrivateKey = @"-----BEGIN RSA PRIVATE KEY-----

@@ -11,19 +11,19 @@ using System.Text;
 namespace CertificateManager.Helpers
 {
     /// <summary>
-    /// Calcuate sha256 hash
+    /// Calcuate Sha512 hash
     /// </summary>
-    public static class Sha256Helper
+    public static class Sha512Helper
     {
         /// <summary>
         /// Computes the hash value for the input data.
         /// </summary>
         /// <param name="input"></param>
-        /// <returns>SHA256 Hash string </returns>
+        /// <returns>SHA512 Hash string </returns>
         public static string GenerateHash(string input)
         {
             // Use a new engine every time
-            using (var hashEngine = SHA256.Create())
+            using (var hashEngine = SHA512.Create())
             {
                 var bytes = Encoding.Unicode.GetBytes(input);
                 var hash = HexStringFromBytes(hashEngine.ComputeHash(bytes, 0, bytes.Length));
@@ -32,28 +32,22 @@ namespace CertificateManager.Helpers
         }
 
         /// <summary>
-        /// Signs data with private key using SHA256
+        /// Signs data with private key using SHA512
         /// </summary>
         /// <param name="privateKey"></param>
         /// <param name="dataToSign"></param>
         /// <returns></returns>
         public static byte[] SignData(string privateKey, byte[] dataToSign)
         {
-            var key = CreateRSACryptoServiceProvider(privateKey);
-            //bouncy
-            byte[] sig = key.SignData(dataToSign, CryptoConfig.MapNameToOID("SHA256"));
-            return sig;
-
-            //.net
-            //RSA.Create(new RSAParameters().)
-            //using (RSA rsa = certificate.GetRSAPrivateKey())
-            //{
-            //    return rsa.SignData(dataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-            //}
+            using (var key = CreateRSACryptoServiceProvider(privateKey))
+            {
+                byte[] sig = key.SignData(dataToSign, CryptoConfig.MapNameToOID("SHA512"));
+                return sig;
+            }
         }
 
         /// <summary>
-        /// Verifies data using public key from certificate (SHA256) against given  value
+        /// Verifies data using public key from certificate (SHA512) against given  value
         /// </summary>
         /// <param name="publicCert"></param>
         /// <param name="signature"></param>
@@ -62,8 +56,8 @@ namespace CertificateManager.Helpers
         public static bool VerifyHash(X509Certificate2 publicCert, byte[] signature, byte[] hash)
         {
             using (var rsaCSP = (RSACryptoServiceProvider)publicCert.PublicKey.Key)
-            {                
-                if (!rsaCSP.VerifyHash(hash,CryptoConfig.MapNameToOID("SHA256"), signature))
+            {
+                if (!rsaCSP.VerifyHash(hash,CryptoConfig.MapNameToOID("SHA512"), signature))
                 {
                     return false;
                 }
@@ -72,7 +66,7 @@ namespace CertificateManager.Helpers
         }
 
         /// <summary>
-        /// Verifies that a digital signature is valid (SHA256),  
+        /// Verifies that a digital signature is valid (SHA512),  
         /// </summary>
         /// <param name="publicCert"></param>
         /// <param name="data"></param>
@@ -82,7 +76,7 @@ namespace CertificateManager.Helpers
         {
             using (var key = (RSACryptoServiceProvider)publicCert.PublicKey.Key)
             {
-                if (!key.VerifyData(data, CryptoConfig.MapNameToOID("SHA256"), signature))
+                if (!key.VerifyData(data, CryptoConfig.MapNameToOID("SHA512"), signature))
                 {
                     return false;
                 }
