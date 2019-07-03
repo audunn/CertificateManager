@@ -14,7 +14,7 @@ namespace CertificateManager.Models
     public class SigningRequest
     {
         /// <summary>
-        /// Algorithm, SHA256 and SHA512 are supported 
+        /// Algorithm, Available values : SHA256WITHRSA, SHA512WITHRSA
         /// </summary>
         [DataMember(Name = "algorithm")]
         public SigningAlgoritm Algorithm { get; set; }
