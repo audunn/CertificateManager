@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CertificateService.Controllers
 {
@@ -77,7 +78,7 @@ namespace CertificateService.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [SwaggerOperation(OperationId = nameof(GenerateDigest))]
+        [SwaggerOperation(OperationId = nameof(GenerateDigest))]
         public ActionResult<string> GenerateDigest([FromBody] string request, SigningAlgoritm algoritm = SigningAlgoritm.SHA256WITHRSA)
         {
             _logger.LogDebug($"Calling POST /generateDigest{algoritm} endpoint ");
@@ -118,7 +119,7 @@ namespace CertificateService.Controllers
         [ProducesResponseType(typeof(SigningResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [SwaggerOperation(OperationId = nameof(GenerateDigest))]        
+        [SwaggerOperation(OperationId = nameof(SignData))]                
         public ActionResult<SigningResponse> SignData([FromBody] SigningRequest request)
         {
             _logger.LogDebug($"Calling POST /generateDigest endpoint ");
