@@ -3,20 +3,21 @@
 A simple Certificate Manger API that can be used to generate self-signed certificates for testing purposes.
 
 ### Why
-Initialy it was used to generated self-signed eIDAS certificates for interanl use while developing solutions for the European PSD2 directive (Revised Directive on Payment Services).
+Initialy it was used to generated self-signed eIDAS certificates for internal use while developing solutions for the European PSD2 directive (Revised Directive on Payment Services).
+It can be used to create other certificates as well omitting the eIDAS extensions.
 
+### What is PSD2
 PSD2 is the European Commission proposal to create safer and more innovative European payments (PSD2, Directive (EU) 2015/2366). The new rules aim to better protect consumers when they pay online, promote the development and use of innovative online and mobile payments such as through open banking, and make cross-border European payment services safer.
 
-An important important element of the directive is the demand for common and secure communication (CSC). eIDAS-defined qualified certificates are demanded for website authentication and electronic seals used for communication between financial services players. The technical specification ETSI TS 119 495 defines a standard for implementing these requirements
+An important element of the directive is the demand for common and secure communication (CSC). eIDAS-defined qualified certificates are demanded for website authentication and electronic seals used for communication between financial services players. The technical specification ETSI TS 119 495 defines a standard for implementing these requirements
 
-In order to be able to test the solution we needed a simple convenient way to generate test certificates and this api provides this service eIDAS certificates. 
+In order to be able to test our PSD2 implementation we needed a simple convenient way to generate self-signed test certificates and this api provides this service eIDAS certificates. 
 
-In theory can be used to create other certificates as well omitting the eIDAS extensions.
 
 ## Further Reading
 - [the PSD2 directive](https://ec.europa.eu/info/law/payment-services-psd-2-directive-eu-2015-2366_en)
 - [the XS2A spec](https://www.berlin-group.org/psd2-access-to-bank-accounts)
-- [ETSI TS 119 495] (https://www.etsi.org/deliver/etsi_ts/119400_119499/119495/01.01.02_60/ts_119495v010102p.pdf)
+- [ETSI TS 119 495](https://www.etsi.org/deliver/etsi_ts/119400_119499/119495/01.01.02_60/ts_119495v010102p.pdf)
 - [Understanding Internet Security & eIDAS Certificates ](https://www.openbankingeurope.eu/media/1177/preta-obe-mg-001-004-psd2-xs2a-understanding-internet-security-eidas-certificates-guide.pdf)
 
 ### Prerequisites
