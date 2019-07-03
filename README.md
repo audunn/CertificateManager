@@ -2,11 +2,13 @@
 
 ## About
 A simple Certificate Manger API to generate self signed certificates for testing purposes.
-### Why
-Me and my son run a [Minecraft](https://minecraft.net) server at home for fun and he sometimes gets into trouble running it when the client has updated but the server has not. My son is still young so he does not know yet how to update it himself.
-So we made this to be used in Minecraft servers startup script to update the server automaticaly. 
-As a learning experience more than anything else we made it in c# using .net core 2.1
 
+### Why
+Initialy it was used to generated self-signed eIDAS certificates for interanl use while developing soltions for the European PSD2 directive(Revised Directive on Payment Servicestive).
+PSD2 is the European Commission proposal to create safer and more innovative European payments (PSD2, Directive (EU) 2015/2366). The new rules aim to better protect consumers when they pay online, promote the development and use of innovative online and mobile payments such as through open banking, and make cross-border European payment services safer.
+An important important element of the directive is the demand for common and secure communication (CSC). eIDAS-defined qualified certificates are demanded for website authentication and electronic seals used for communication between financial services players. The technical specification ETSI TS 119 495 defines a standard for implementing these requirements
+
+In order to be able to test the solution this api generates eIDAS
 ### Prerequisites
 
 You will need to have .NET Core
