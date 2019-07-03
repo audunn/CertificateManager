@@ -63,13 +63,14 @@ namespace CertificateService.Controllers
 
         //// POST api/generateDigest
         /// <summary>
-        /// Creates and returns a sha256 digest, use text/plain (to be compatible with API that this replaces)
+        /// Creates and returns a sha256/sha512 digest, use text/plain (to be compatible with API that this replaces)
         /// </summary>
         /// <param name="request">Create digest request</param>        
+        /// <param name="algoritm">Digest algoritm to use</param>
         /// <returns>The generated digest</returns>        
         /// <response code="200">The generated digest.</response>
         /// <response code="400">Bad Request</response>
-        /// <response code="500">Internal Server Error</response>        
+        /// <response code="500">Internal Server Error</response>                
         [HttpPost("generateDigest", Name = "GenerateDigest")]
         [Produces("application/json")]
         [Consumes("text/plain", new[] { "application/json"})]
@@ -77,18 +78,28 @@ namespace CertificateService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         // [SwaggerOperation(OperationId = nameof(GenerateDigest))]
-        public ActionResult<string> GenerateDigest([FromBody] string request)
+        public ActionResult<string> GenerateDigest([FromBody] string request, SigningAlgoritm algoritm = SigningAlgoritm.SHA256WITHRSA)
         {
-            _logger.LogDebug($"Calling POST /generateDigest endpoint ");
+            _logger.LogDebug($"Calling POST /generateDigest{algoritm} endpoint ");
             if (request == null)
             {
                 return BadRequest();
             }
             
-            _logger.LogDebug($"Calling POST /generateDigest endpoint ");
-            return $"SHA-256={Sha256Helper.GenerateHash(request)}";
-        }
+            if (algoritm == SigningAlgoritm.SHA256WITHRSA)
+            {
+                return $"SHA-256={Sha256Helper.GenerateHash(request)}";
+            }
+            else if (algoritm == SigningAlgoritm.SHA512WITHRSA)
+            {
+                return $"SHA-512={Sha512Helper.GenerateHash(request)}";
+            }
+            else
+            {
+                return BadRequest($"Unsupported digest algoritm {algoritm}");
+            }
 
+        }
 
         //// POST api/generateDigest
         /// <summary>

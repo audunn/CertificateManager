@@ -134,6 +134,7 @@ namespace CertificateManager.BusinessLogic
             // Generating Random Numbers            
             CryptoApiRandomGenerator randomGenerator = new CryptoApiRandomGenerator();
             SecureRandom random = new SecureRandom(randomGenerator);
+            //ISignatureFactory signatureFactory = new Asn1SignatureFactory("SHA512WITHRSA", issuerPrivKey, random);
             ISignatureFactory signatureFactory = new Asn1SignatureFactory("SHA512WITHRSA", issuerPrivKey, random);
             // The Certificate Generator
             X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
