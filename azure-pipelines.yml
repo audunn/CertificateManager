@@ -2,12 +2,15 @@
 # Build and test ASP.NET Core projects targeting the full .NET Framework.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# Test pipeline 
 
 trigger:
 - master
 
+#pool:
+#  vmImage: 'windows-latest'
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-16.04'
 
 variables:
   solution: '**/*.sln'
@@ -22,22 +25,72 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
-    restoreSolution: '$(solution)'
+    # restoreSolution: '$(solution)'
+    restoreSolution: '**/*.csproj'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+# - task: VSBuild@1
+#   inputs:
+#     solution: '$(solution)'
+#     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
+# .NET Core
+# Pack NuGet packages.
 
-- task: VSTest@2
+
+# Package NuGet
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'pack'
+#    configuration: 'release'
+#    packagesToPack: '**/*.csproj' # Required when command == pack
+#    packDirectory: '$(build.artifactStagingDirectory)' # Optional
+#    #nobuild: false # Optional
+#    #versioningScheme: 'off' # Options: off, byPrereleaseNumber, byEnvVar, byBuildNumber
+#    #versionEnvVar: # Required when versioningScheme == byEnvVar
+#    #majorVersion: '1' # Required when versioningScheme == byPrereleaseNumber
+#    #minorVersion: '0' # Required when versioningScheme == byPrereleaseNumber
+#    #patchVersion: '0' # Required when versioningScheme == byPrereleaseNumber
+#    #buildProperties: # Optional
+#    #verbosityPack: 'detailed' # Options: quiet, minimal, normal, detailed, diagnostic
+
+
+# - task: VSTest@2
+#   inputs:
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
+
+# Build your .NET Core project (but avoid restore your packages again)
+
+- task: DotNetCoreCLI@2
+  displayName: ".NET build"
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    projects: '**/*.csproj'
+    arguments: --configuration $(BuildConfiguration) --no-restore
+
+# Run your unit tests
+
+# - task: DotNetCoreCLI@2
+#   displayName: ".NET test"
+#   inputs:
+#     command: test
+#     projects: 'test\**.csproj'
+
+# Create the deployment package for your web project
+
+- task: DotNetCoreCLI@2
+  displayName: ".NET publish package"
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/*.csproj'
+    arguments: '--configuration $(BuildConfiguration) --no-restore --output $(Build.ArtifactStagingDirectory)/app/pkg'
+    zipAfterPublish: true
+    modifyOutputPath: false
 
 - task: PublishBuildArtifacts@1
+  displayName: "Publish artifacts"
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/app/pkg'
     ArtifactName: 'drop'
     publishLocation: 'Container'
