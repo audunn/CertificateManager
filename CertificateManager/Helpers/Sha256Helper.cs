@@ -25,8 +25,8 @@ namespace CertificateManager.Helpers
             // Use a new engine every time
             using (var hashEngine = SHA256.Create())
             {
-                var bytes = Encoding.Unicode.GetBytes(input);
-                var hash = HexStringFromBytes(hashEngine.ComputeHash(bytes, 0, bytes.Length));
+                var bytes = Encoding.UTF8.GetBytes(input);
+                var hash = Convert.ToBase64String(hashEngine.ComputeHash(bytes, 0, bytes.Length));
                 return hash;
             }
         }
@@ -120,18 +120,6 @@ namespace CertificateManager.Helpers
 
                 return cryptoServiceProvider;
             }
-        }
-        private static string HexStringFromBytes(IEnumerable<byte> bytes)
-        {
-            var sb = new StringBuilder();
-
-            foreach (var b in bytes)
-            {
-                var hex = b.ToString("x2");
-                sb.Append(hex);
-            }
-
-            return sb.ToString();
         }
     }
 }

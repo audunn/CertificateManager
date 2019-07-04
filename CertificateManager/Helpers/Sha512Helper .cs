@@ -23,10 +23,11 @@ namespace CertificateManager.Helpers
         public static string GenerateHash(string input)
         {
             // Use a new engine every time
+            //input = TrimAllWithInplaceCharArray(input);
             using (var hashEngine = SHA512.Create())
             {
-                var bytes = Encoding.Unicode.GetBytes(input);
-                var hash = HexStringFromBytes(hashEngine.ComputeHash(bytes, 0, bytes.Length));
+                var bytes = Encoding.UTF8.GetBytes(input);
+                var hash = Convert.ToBase64String(hashEngine.ComputeHash(bytes, 0, bytes.Length));
                 return hash;
             }
         }
@@ -53,7 +54,7 @@ namespace CertificateManager.Helpers
         /// <param name="signature"></param>
         /// <param name="hash"></param>
         /// <returns></returns>
-        public static bool VerifyHash(X509Certificate2 publicCert, byte[] signature, byte[] hash)
+        public static bool VerifyHash(byte[] hash, X509Certificate2 publicCert, byte[] signature )
         {
             using (var rsaCSP = (RSACryptoServiceProvider)publicCert.PublicKey.Key)
             {
@@ -114,18 +115,6 @@ namespace CertificateManager.Helpers
 
                 return cryptoServiceProvider;
             }
-        }
-        private static string HexStringFromBytes(IEnumerable<byte> bytes)
-        {
-            var sb = new StringBuilder();
-
-            foreach (var b in bytes)
-            {
-                var hex = b.ToString("x2");
-                sb.Append(hex);
-            }
-
-            return sb.ToString();
         }
     }
 }
