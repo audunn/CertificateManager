@@ -70,7 +70,7 @@ namespace CertificateService.Controllers
         /// <param name="request">Create digest request</param>        
         /// <param name="algoritm">Digest algoritm to use</param>
         /// <returns>The generated digest as a base64 endocded string</returns>
-        /// <response code="200">The generated digest.</response>
+        /// <response code="200">The generated digest as a base64 endocded string.</response>
         /// <response code="400">Bad Request</response>
         /// <response code="500">Internal Server Error</response>                
         [HttpPost("generateDigest", Name = "GenerateDigest")]
