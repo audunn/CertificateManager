@@ -51,7 +51,7 @@ When you browse to the url you will get a swaggerUI interface to explore the end
 
 ## Authors
 
-* **Auðunn Baldvinsson** - *Initial work* - [audunn](https://github.com/audunn)
+* **AuÃ°unn Baldvinsson** - *Initial work* - [audunn](https://github.com/audunn)
 
 See also the list of [contributors](https://github.com/audunn/CertificateManager/graphs/contributors) who participated in this project.
 
@@ -60,7 +60,7 @@ See also the list of [contributors](https://github.com/audunn/CertificateManager
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details
 
 ## Acknowledgments
-
+* Imported from https://github.com/audunn/CertificateManager
 * Inspiration by https://github.com/adorsys/psd2-accelerator
 
 
