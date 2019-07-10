@@ -74,7 +74,8 @@ namespace CertificateService.Controllers
         /// <response code="400">Bad Request</response>
         /// <response code="500">Internal Server Error</response>                
         [HttpPost("generateDigest", Name = "GenerateDigest")]
-        [Produces("application/json")]
+        //[Produces("application/json")]
+        [Produces("text/plain")]
         [Consumes("text/plain", new[] { "application/json"})]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
