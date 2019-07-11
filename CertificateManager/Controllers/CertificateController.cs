@@ -126,7 +126,7 @@ namespace CertificateService.Controllers
         /// <remarks>
         ///  Supports SHA256WITHRSA and SHA512WITHRSA
         ///  Note clients can use accept header to request either json object or accept: text/plain which will return a string formatted as signature header, 
-        ///  as described in NextGenPSD2 XS2A Framework  Implementation Guidelines
+        ///  as described in NextGenPSD2 XS2A Framework  Implementation Guidelines (based on https://tools.ietf.org/pdf/draft-cavage-http-signatures-10.pdf#8)
         /// </remarks>
         /// <param name="request">Signature request</param>        
         /// <returns>The generated digest</returns>        
