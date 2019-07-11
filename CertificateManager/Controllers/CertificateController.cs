@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Reflection;
 using System.Text;
 using CertificateManager.BusinessLogic;
 using CertificateManager.Helpers;
@@ -157,20 +159,25 @@ namespace CertificateService.Controllers
             {
                 var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-256=", ""));
                 var signature = Convert.ToBase64String(Sha256Helper.SignData(request.PrivateKey, bytes));
-                return new SigningResponse() { Algorithm = request.Algorithm, Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId = request.KeyID, Signature = signature };
+                return new SigningResponse() { Algorithm = Enum.GetName(typeof(SigningAlgoritm), request.Algorithm), Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId = request.KeyID, Signature = signature };
             }
             else if (request.Algorithm == SigningAlgoritm.SHA512WITHRSA)
             {
                 var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-512=", ""));
                 var signature = Convert.ToBase64String(Sha512Helper.SignData(request.PrivateKey, bytes));
-                return new SigningResponse() { Algorithm = request.Algorithm, Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId = request.KeyID, Signature = signature };
+                return new SigningResponse() { Algorithm = GetEnumDescription(request.Algorithm), Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId = request.KeyID, Signature = signature };
             }
             else
             {
                 return BadRequest($"Unsupported signing algoritm {request.Algorithm}");
             }
         }
-
+        private static string GetEnumDescription(Enum enumVal)
+        {
+            System.Reflection.MemberInfo[] memInfo = enumVal.GetType().GetMember(enumVal.ToString());
+            DescriptionAttribute attribute = CustomAttributeExtensions.GetCustomAttribute<DescriptionAttribute>(memInfo[0]);
+            return attribute.Description;
+        }
         private string DecodeBase64(string inputString)
         {
             var base64EncodedBytes = System.Convert.FromBase64String(inputString);

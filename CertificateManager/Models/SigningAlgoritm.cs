@@ -14,13 +14,13 @@ namespace CertificateManager.Models
         /// <summary>
         /// SHA256 WITH RSA
         /// </summary>
-        [Description("SHA256WITHRSA")]
+        [Description("rsa-sha256")]
         SHA256WITHRSA,
 
         /// <summary>
         /// SHA512 WITH RSA
         /// </summary>
-        [Description("SHA512WITHRSA")]
+        [Description("rsa-sha512")]
         SHA512WITHRSA,
     }
 }
