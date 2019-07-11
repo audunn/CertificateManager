@@ -26,7 +26,7 @@ namespace CertificateManager.Models
         public string Digest { get; set; }
 
         /// <summary>
-        /// Signing data
+        /// Signing data, String base64 encoded to survive endcoding and transport through transport layers
         /// </summary>
         [DataMember(Name = "dataToSign")]
         public string DataToSign { get; set; }

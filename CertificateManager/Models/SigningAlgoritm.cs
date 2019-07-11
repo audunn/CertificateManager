@@ -20,7 +20,7 @@ namespace CertificateManager.Models
         /// <summary>
         /// SHA512 WITH RSA
         /// </summary>
-        [Description("SHA256WITHRSA")]
+        [Description("SHA512WITHRSA")]
         SHA512WITHRSA,
     }
 }

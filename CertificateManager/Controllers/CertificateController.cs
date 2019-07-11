@@ -64,11 +64,16 @@ namespace CertificateService.Controllers
 
         //// POST api/generateDigest
         /// <summary>
-        /// Creates and returns a sha256/sha512 digest, use text/plain (to be compatible with API that this replaces)
-        /// 
+        /// Creates and returns a sha256/sha512 digest, use text/plain (to be compatible with API that this replaces) and a Base64 encoded string
         /// </summary>
-        /// <param name="request">Create digest request</param>        
+        /// <param name="request">Create digest request. String base64 encoded to survive endcoding and transport through transport layers</param>
         /// <param name="algoritm">Digest algoritm to use</param>
+        /// <remarks>
+        /// ### Base64 encoding
+        ///  Base64 encoded string is needed since string data when transported over the wire via different systems is sometimes encoded in different fashion depending on layer or system. 
+        ///  That can mean that while the string may look the same there may be very slight difference in the binary data so when we calculate digest to compare and verify the results may not match.
+        ///  Base64 encoding ensures the string survive encoding and transport through transport layers
+        /// </remarks>
         /// <returns>The generated digest as a base64 endocded string</returns>
         /// <response code="200">The generated digest as a base64 endocded string.</response>
         /// <response code="400">Bad Request</response>
@@ -88,7 +93,15 @@ namespace CertificateService.Controllers
             {
                 return BadRequest();
             }
-            
+            try
+            {
+                request = DecodeBase64(request);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error decoding request data", ex);
+                return BadRequest("Error decoding request data, check base64 encoding");
+            }
             if (algoritm == SigningAlgoritm.SHA256WITHRSA)
             {
                 return $"SHA-256={Sha256Helper.GenerateHash(request)}";
@@ -131,6 +144,15 @@ namespace CertificateService.Controllers
             }
 
             _logger.LogDebug($"Calling POST /generateDigest endpoint ");
+            try
+            {
+                request.DataToSign = DecodeBase64(request.DataToSign);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error decoding data to sign", ex);
+                return BadRequest("Error decoding data to sign, check base64 encoding");
+            }
             if (request.Algorithm == SigningAlgoritm.SHA256WITHRSA)
             {
                 var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-256=", ""));
@@ -147,6 +169,12 @@ namespace CertificateService.Controllers
             {
                 return BadRequest($"Unsupported signing algoritm {request.Algorithm}");
             }
+        }
+
+        private string DecodeBase64(string inputString)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(inputString);
+            return Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }
