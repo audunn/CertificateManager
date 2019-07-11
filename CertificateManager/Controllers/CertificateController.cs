@@ -125,6 +125,8 @@ namespace CertificateService.Controllers
         /// </summary>        
         /// <remarks>
         ///  Supports SHA256WITHRSA and SHA512WITHRSA
+        ///  Note clients can use accept header to request either json object or accept: text/plain which will return a string formatted as signature header, 
+        ///  as described in RFC 4648[RFC4648], Section 4 [5]
         /// </remarks>
         /// <param name="request">Signature request</param>        
         /// <returns>The generated digest</returns>        
@@ -132,12 +134,12 @@ namespace CertificateService.Controllers
         /// <response code="400">Bad Request</response>
         /// <response code="500">Internal Server Error</response>        
         [HttpPost("generateSignature", Name = "SignData")]
-        [Produces("application/json")]        
-        [ProducesResponseType(typeof(SigningResponse), StatusCodes.Status200OK)]
+        //[Produces("text/plain", "application/json")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(OperationId = nameof(SignData))]                
-        public ActionResult<SigningResponse> SignData([FromBody] SigningRequest request)
+        public IActionResult SignData([FromBody] SigningRequest request)
         {
             _logger.LogDebug($"Calling POST /generateDigest endpoint ");
             if (request == null)
@@ -159,13 +161,32 @@ namespace CertificateService.Controllers
             {
                 var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-256=", ""));
                 var signature = Convert.ToBase64String(Sha256Helper.SignData(request.PrivateKey, bytes));
-                return new SigningResponse() { Algorithm = Enum.GetName(typeof(SigningAlgoritm), request.Algorithm), Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId = request.KeyID, Signature = signature };
+                var response = new SigningResponse()
+                {
+                    Algorithm = Enum.GetName(typeof(SigningAlgoritm),
+                    request.Algorithm),
+                    Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id",
+                    KeyId = request.KeyID,
+                    Signature = signature,
+                    CertificateAuthority = "CA"
+                };
+
+
+                return Ok(response);
             }
             else if (request.Algorithm == SigningAlgoritm.SHA512WITHRSA)
             {
                 var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-512=", ""));
                 var signature = Convert.ToBase64String(Sha512Helper.SignData(request.PrivateKey, bytes));
-                return new SigningResponse() { Algorithm = GetEnumDescription(request.Algorithm), Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id", KeyId = request.KeyID, Signature = signature };
+                var response = new SigningResponse()
+                {
+                    Algorithm = GetEnumDescription(request.Algorithm),
+                    Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id",
+                    KeyId = request.KeyID,
+                    Signature = signature,
+                    CertificateAuthority = "CA"
+                };
+                return Ok(response);
             }
             else
             {

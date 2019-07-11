@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -106,6 +107,8 @@ namespace CertificateService
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMvc(options =>
             {
+                options.RespectBrowserAcceptHeader = true;
+                options.OutputFormatters.Add(new TextPlainOutputFormatter());
                 options.InputFormatters.Add(new TextPlainInputFormatter());
             }
             ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

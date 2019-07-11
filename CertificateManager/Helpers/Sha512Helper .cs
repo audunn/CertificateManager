@@ -41,7 +41,7 @@ namespace CertificateManager.Helpers
         public static byte[] SignData(string privateKey, byte[] dataToSign)
         {
             using (var key = CreateRSACryptoServiceProvider(privateKey))
-            {
+            {                
                 byte[] sig = key.SignData(dataToSign, CryptoConfig.MapNameToOID("SHA512"));
                 return sig;
             }

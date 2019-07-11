@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text;
 
 namespace CertificateManager.Models
 {
@@ -30,5 +31,18 @@ namespace CertificateManager.Models
         /// </summary>
         [DataMember(Name = "ignature")]
         public string Signature { get; set; }
+
+        /// <summary>
+        /// The full Distinguished Name of the Certification Authority having produced the certificate to be used. 
+        /// </summary>
+        public string CertificateAuthority { get; set; }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"Signature: keyId=\"{KeyId},CA={CertificateAuthority}\",algorithm=\"{Algorithm}\",    headers=\"Digest X-Request - ID PSU - ID TPP - Redirect - URI Date\",    signature=\"{Signature}\" ";
+        }
     }
+
 }

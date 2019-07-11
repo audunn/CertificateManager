@@ -32,7 +32,9 @@ namespace CertificateManager.Models
         public string DataToSign { get; set; }
 
         /// <summary>
-        /// keyID 
+        /// keyID, key id that the server can use to look up the component they need to validate the signature.
+        /// Will be returned in the singin header string 
+        /// This is the Serial Number of the TPP's certificate included in the "TPP-Signature-Certificate" header in requests to PSD2 API'S 
         /// </summary>
         [DataMember(Name = "keyID")]
         public string KeyID { get; set; }
@@ -66,5 +68,10 @@ namespace CertificateManager.Models
         /// </summary>
         [DataMember(Name = "tppTransactionID")]
         public string TppTransactionID { get; set; }
+
+        /// <summary>
+        /// The full Distinguished Name of the Certification Authority having produced the certificate to be used. 
+        /// </summary>
+        public string CertificateAuthority { get; set; }
     }
 }
