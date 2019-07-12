@@ -81,7 +81,7 @@ namespace CertificateManager.BusinessLogic
 
                 using (X509Certificate2 parentCert = parentReq.CreateSelfSigned(
                     DateTimeOffset.UtcNow.AddDays(-45),
-                    DateTimeOffset.UtcNow.AddDays(365)))
+                    DateTimeOffset.UtcNow.AddDays(request.Validity)))
                 {
                     CertificateRequest req = new CertificateRequest(
                         $"CN={request.CommonName},O={request.Organization}, OU={request.OrganizationUnit},C={request.Country}, L={request.City}, ST={request.State}",
