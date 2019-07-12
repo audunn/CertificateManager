@@ -30,6 +30,7 @@ namespace CertificateManager.Models
         /// <summary>
         ///  The ‘algorithm‘ parameter is used to specify the digital signature algorithm to use when generating the signature.  Valid   values for 
         ///  this parameter can be found in the Signature Algorithms registry located at http://www.iana.org/assignments/signature-algorithms [6] and MUST NOT be marked "deprecated".
+        ///  Note link may not be live yet, draft can be seen here https://w3c-dvcg.github.io/http-signatures/#hsa-registry
         ///  It must identify SHA-256 or SHA-512 as Hash algorithm
         /// </summary>
         /// <remarks>
