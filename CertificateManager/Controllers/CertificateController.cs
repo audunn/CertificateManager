@@ -135,7 +135,7 @@ namespace CertificateService.Controllers
         /// <response code="500">Internal Server Error</response>        
         [HttpPost("generateSignature", Name = "SignData")]
         //[Produces("text/plain", "application/json")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SigningResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(OperationId = nameof(SignData))]                
