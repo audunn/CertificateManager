@@ -41,7 +41,7 @@ namespace CertificateManager.Models
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $"Signature: keyId=\"{KeyId},CA={CertificateAuthority}\",algorithm=\"{Algorithm}\",    headers=\"Digest X-Request - ID PSU - ID TPP - Redirect - URI Date\",    signature=\"{Signature}\" ";
+            return $"keyId=\"{KeyId},CA={CertificateAuthority}\",algorithm=\"{Algorithm}\",    headers=\"Digest X-Request - ID PSU - ID TPP - Redirect - URI Date\",    signature=\"{Signature}\" ";
         }
     }
 
