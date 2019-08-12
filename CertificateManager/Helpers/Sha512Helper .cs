@@ -73,13 +73,37 @@ namespace CertificateManager.Helpers
         /// <param name="data"></param>
         /// <param name="signature"></param>
         /// <returns></returns>
+        public static bool VerifyData(string publicCert, byte[] data, byte[] signature)
+        {
+            //buffer for encoding
+            publicCert = publicCert.Replace("-----BEGIN CERTIFICATE-----", "");
+            publicCert = publicCert.Replace("-----END CERTIFICATE-----", "");
+            byte[] base64EncodedBytes = new byte[GetBase64BufferLength(publicCert)];
+            if (Convert.TryFromBase64String(publicCert, base64EncodedBytes, out int bytesWritten) && bytesWritten > 0)
+            {
+                var clientCertificate = new X509Certificate2(base64EncodedBytes);
+                return VerifyData(clientCertificate, data, signature);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Verifies that a digital signature is valid (SHA512),  
+        /// </summary>
+        /// <param name="publicCert"></param>
+        /// <param name="data"></param>
+        /// <param name="signature"></param>
+        /// <returns></returns>
         public static bool VerifyData(X509Certificate2 publicCert, byte[] data, byte[] signature)
         {
-            using (var key = (RSACryptoServiceProvider)publicCert.PublicKey.Key)
+            using (var key = publicCert.GetRSAPublicKey())
             {
-                if (!key.VerifyData(data, CryptoConfig.MapNameToOID("SHA512"), signature))
+                if (key != null)
                 {
-                    return false;
+                    return key.VerifyData(data, signature, HashAlgorithmName.SHA512, RSASignaturePadding.Pkcs1);
                 }
             }
             return true;
@@ -115,6 +139,29 @@ namespace CertificateManager.Helpers
 
                 return cryptoServiceProvider;
             }
+        }
+
+        internal static int GetBase64BufferLength(string base64String)
+        {
+            //x = (n * (3/4)) - y; y will be 2 if Base64 ends with '==' and 1 if Base64 ends with '='.
+            var base64Length = ((base64String.Length * 3) + 3) / 4 - GetBase64BufferLengthY(base64String);
+
+            return base64Length;
+        }
+        internal static int GetBase64BufferLengthY(string base64String)
+        {
+            // y will be 2 if Base64 ends with '==' and 1 if Base64 ends with '='.
+            if (base64String.Length > 0 && base64String[base64String.Length - 1] == '=')
+            {
+                if (base64String.Length > 1 && base64String[base64String.Length - 2] == '=')
+                {
+                    return 2;
+                }
+
+                return 1;
+            }
+
+            return 0;
         }
     }
 }

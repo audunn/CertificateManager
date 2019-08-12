@@ -73,5 +73,11 @@ namespace CertificateManager.Models
         /// The full Distinguished Name of the Certification Authority having produced the certificate to be used. 
         /// </summary>
         public string CertificateAuthority { get; set; }
+
+        /// <summary>
+        /// Public key certificate, the public key contained in the certificate is used to validate the generated signature 
+        /// </summary>
+        [DataMember(Name = "certificate")]
+        public string Certificate { get; set; }
     }
 }

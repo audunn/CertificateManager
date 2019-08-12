@@ -160,7 +160,10 @@ namespace CertificateService.Controllers
             if (request.Algorithm == SigningAlgoritm.SHA256WITHRSA)
             {
                 var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-256=", ""));
-                var signature = Convert.ToBase64String(Sha256Helper.SignData(request.PrivateKey, bytes));
+                var signBytes = Sha256Helper.SignData(request.PrivateKey, bytes);
+                var signature = Convert.ToBase64String(signBytes);
+                var testValid = Sha512Helper.VerifyData(request.Certificate, bytes, signBytes);
+
                 var response = new SigningResponse()
                 {
                     Algorithm = Enum.GetName(typeof(SigningAlgoritm),
@@ -168,7 +171,8 @@ namespace CertificateService.Controllers
                     Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id",
                     KeyId = request.KeyID,
                     Signature = signature,
-                    CertificateAuthority = "CA"
+                    CertificateAuthority = "CA",
+                    IsValid = testValid
                 };
 
 
@@ -177,14 +181,17 @@ namespace CertificateService.Controllers
             else if (request.Algorithm == SigningAlgoritm.SHA512WITHRSA)
             {
                 var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-512=", ""));
-                var signature = Convert.ToBase64String(Sha512Helper.SignData(request.PrivateKey, bytes));
+                var signBytes = Sha512Helper.SignData(request.PrivateKey, bytes);
+                var signature = Convert.ToBase64String(signBytes);
+                var testValid = Sha512Helper.VerifyData(request.Certificate, bytes, signBytes);
                 var response = new SigningResponse()
                 {
                     Algorithm = GetEnumDescription(request.Algorithm),
                     Headers = "digest tpp-transaction - id tpp - request - id timestamp psu-id",
                     KeyId = request.KeyID,
                     Signature = signature,
-                    CertificateAuthority = "CA"
+                    CertificateAuthority = "CA",
+                    IsValid = testValid
                 };
                 return Ok(response);
             }

@@ -38,18 +38,25 @@ namespace CertificateManager.BusinessLogic
         {
             //var certificate = CreateCertificate(request, true);            
             AsymmetricKeyParameter myCAprivateKey = null;
+            CertificateResponse response;
             _logger.LogDebug("Create CA Certificate for EIDAS Certificate request");
-            X509Certificate2 certificateAuthorityCertificate = CreateCertificateAuthorityCertificate($"CN={request.CommonName}CA", ref myCAprivateKey);
-            _logger.LogDebug("Creating certificate based on CA");
-            //X509Certificate2 certificate = CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey("CN=" + certSubjectName, "CN=" + certSubjectName + "CA", myCAprivateKey);
-            X509Certificate2 certificate = CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey(request, myCAprivateKey);
-            TextWriter textWriter = new StringWriter();
-            PemWriter pemWriter = new PemWriter(textWriter);
-            pemWriter.WriteObject(myCAprivateKey);
-            pemWriter.Writer.Flush();
+            using (X509Certificate2 certificateAuthorityCertificate = CreateCertificateAuthorityCertificate($"CN={request.CommonName}CA", ref myCAprivateKey))
+            {
+                _logger.LogDebug("Creating certificate based on CA");
+                //X509Certificate2 certificate = CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey("CN=" + certSubjectName, "CN=" + certSubjectName + "CA", myCAprivateKey);
+                AsymmetricKeyParameter myPrivateKey = null;
+                using (X509Certificate2 certificate = CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey(request, myCAprivateKey, ref myPrivateKey))
+                {
+                    TextWriter textWriter = new StringWriter();
+                    PemWriter pemWriter = new PemWriter(textWriter);
+                    pemWriter.WriteObject(myPrivateKey);
+                    pemWriter.Writer.Flush();
 
-            string privateKey = textWriter.ToString();
-            CertificateResponse response = new CertificateResponse() { EncodedCert = GetCertificateAsString(certificate), PrivateKey = privateKey };
+                    string privateKey = textWriter.ToString();
+                    response = new CertificateResponse() { EncodedCert = GetCertificateAsString(certificate), PrivateKey = privateKey };
+
+                }
+            }
             return response;
         }
 
@@ -126,8 +133,9 @@ namespace CertificateManager.BusinessLogic
         /// </summary>
         /// <param name="request"></param>
         /// <param name="issuerPrivKey"></param>
+        /// <param name="myPrivateKey"></param>
         /// <returns></returns>
-        public static X509Certificate2 CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey(APICertificateRequest request, AsymmetricKeyParameter issuerPrivKey)
+        public static X509Certificate2 CreateSelfSignedCertificateBasedOnCertificateAuthorityPrivateKey(APICertificateRequest request, AsymmetricKeyParameter issuerPrivKey, ref AsymmetricKeyParameter myPrivateKey)
         {
             const int keyStrength = 4096;
 
@@ -203,7 +211,7 @@ namespace CertificateManager.BusinessLogic
             var keyPairGenerator = new RsaKeyPairGenerator();
             keyPairGenerator.Init(keyGenerationParameters);
             subjectKeyPair = keyPairGenerator.GenerateKeyPair();
-
+            myPrivateKey = subjectKeyPair.Private;
             certificateGenerator.SetPublicKey(subjectKeyPair.Public);
 
             //GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.OtherName, subjectName));

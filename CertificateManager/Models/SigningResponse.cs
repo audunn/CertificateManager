@@ -71,6 +71,12 @@ namespace CertificateManager.Models
         /// </summary>
         public string CertificateAuthority { get; set; }
 
+        /// <summary>
+        /// isValid, shows if signature generated passes validation
+        /// </summary>
+        [DataMember(Name = "isValid")]
+        public bool IsValid { get; set; }
+
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
