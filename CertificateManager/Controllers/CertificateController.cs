@@ -162,7 +162,7 @@ namespace CertificateService.Controllers
                 var bytes = Encoding.UTF8.GetBytes(request.DataToSign ?? request.Digest.Replace("SHA-256=", ""));
                 var signBytes = Sha256Helper.SignData(request.PrivateKey, bytes);
                 var signature = Convert.ToBase64String(signBytes);
-                var testValid = Sha512Helper.VerifyData(request.Certificate, bytes, signBytes);
+                var testValid = Sha256Helper.VerifyData(request.Certificate, bytes, signBytes);
 
                 var response = new SigningResponse()
                 {
