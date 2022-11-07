@@ -63,4 +63,4 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 * Imported from https://github.com/audunn/CertificateManager
 * Inspiration by https://github.com/adorsys/psd2-accelerator
 
-
+<a rel="me" href="https://xn--lofll-1sat.is/@audunn">Mastodon</a>
